@@ -13,10 +13,12 @@ class Warrior:
         self.health -= self.damage(attack)
         
     def equip_weapon(self, weapon):
-        for atr in filter(lambda a: not a.startswith('__'), dir(self)):
+        print(dir(self))
+        for atr in filter(lambda a: not a.startswith('__'), vars(self)):
             print(atr)
-            self.atr += weapon.atr
-            if self.atr < 0 : self.atr = 0
+            print(self.attack)
+            setattr(self, atr, getattr(self, atr)+getattr(weapon, atr))
+            if getattr(self, atr) < 0 : setattr(self, atr, 0)
         
 class Knight(Warrior):
     def __init__(self):
