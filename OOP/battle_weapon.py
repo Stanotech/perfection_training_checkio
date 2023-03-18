@@ -13,10 +13,16 @@ class Warrior:
         self.health -= self.damage(attack)
         
     def equip_weapon(self, weapon):
-        print(dir(self))
         for atr in filter(lambda a: not a.startswith('__'), vars(self)):
             setattr(self, atr, getattr(self, atr)+getattr(weapon, atr))
             if getattr(self, atr) < 0 : setattr(self, atr, 0)
+            
+class Warlord(Warrior):
+    def __init__(self):
+        super().__init__(health=100, attack=4)
+        self.defense = 2
+    def damage(self, attack):
+        return max(0, attack - self.defense)   
         
 class Knight(Warrior):
     def __init__(self):
@@ -53,19 +59,20 @@ class Healer(Warrior):
         other.loss(self.attack)
         
     def heal(self, friend):
-        friend.health += 2 + self.heal_power        
+        friend.health += 2 + self.heal_power
+        
 class Weapon:
     def __init__(self, health, attack, defense, vampirism, heal_power):
         self.health = health
         self.attack = attack
         self.defense = defense
         self.vampirism = vampirism
-        self.heal_power = heal_power    
-
+        self.heal_power = heal_power
+        
+    
 class Sword(Weapon):
     def __init__(self):
         super().__init__(5, 2, 0, 0, 0)
-
 class Shield(Weapon):
     def __init__(self):
         super().__init__(20, -1, 2, 0, 0)
@@ -127,6 +134,9 @@ class Army:
     def is_alive(self):
         return self.first_alive_unit is not None
     
+    def move_units():
+        self.units.append(self.units.pop())
+    
 class Battle:                                       # battle.fight(my_army, enemy_army)
     @staticmethod
     def fight(army_1, army_2):
@@ -159,11 +169,43 @@ class Battle:                                       # battle.fight(my_army, enem
                 
         return Battle.straight_fight(arm1, arm2)
     
-unit_1 = Warrior()
-unit_2 = Vampire()
-weapon_1 = Weapon(-10, 5, 0, 40, 0)
-weapon_2 = Sword()
-unit_1.equip_weapon(weapon_1)
-unit_2.equip_weapon(weapon_2)
-fight(unit_1, unit_2)
 
+
+if __name__ == '__main__':
+    #These "asserts" using only for self-checking and not necessary for auto-testing
+    
+	ronald = Warlord()
+	heimdall = Knight()
+
+	assert fight(heimdall, ronald) == False
+
+	my_army = Army()
+	my_army.add_units(Warlord, 1)
+	my_army.add_units(Warrior, 2)
+	my_army.add_units(Lancer, 2)
+	my_army.add_units(Healer, 2)
+
+	enemy_army = Army()
+	enemy_army.add_units(Warlord, 3)
+	enemy_army.add_units(Vampire, 1)
+	enemy_army.add_units(Healer, 2)
+	enemy_army.add_units(Knight, 2)
+
+	my_army.move_units()
+	enemy_army.move_units()
+
+	assert type(my_army.units[0]) == Lancer
+	assert type(my_army.units[1]) == Healer
+	assert type(my_army.units[-1]) == Warlord
+
+	assert type(enemy_army.units[0]) == Vampire
+	assert type(enemy_army.units[-1]) == Warlord
+	assert type(enemy_army.units[-2]) == Knight
+
+	#6, not 8, because only 1 Warlord per army could be
+	assert len(enemy_army.units) == 6
+
+	battle = Battle()
+
+	assert battle.fight(my_army, enemy_army) == True
+    print("Coding complete? Let's try tests!")
