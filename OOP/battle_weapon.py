@@ -15,8 +15,6 @@ class Warrior:
     def equip_weapon(self, weapon):
         print(dir(self))
         for atr in filter(lambda a: not a.startswith('__'), vars(self)):
-            print(atr)
-            print(self.attack)
             setattr(self, atr, getattr(self, atr)+getattr(weapon, atr))
             if getattr(self, atr) < 0 : setattr(self, atr, 0)
         
