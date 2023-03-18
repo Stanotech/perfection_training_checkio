@@ -53,17 +53,14 @@ class Healer(Warrior):
         other.loss(self.attack)
         
     def heal(self, friend):
-        friend.health += 2 + self.heal_power
-        
+        friend.health += 2 + self.heal_power        
 class Weapon:
     def __init__(self, health, attack, defense, vampirism, heal_power):
         self.health = health
         self.attack = attack
         self.defense = defense
         self.vampirism = vampirism
-        self.heal_power = heal_power
-        
-    
+        self.heal_power = heal_power    
 
 class Sword(Weapon):
     def __init__(self):
