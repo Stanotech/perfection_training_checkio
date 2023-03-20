@@ -135,14 +135,17 @@ class Army:
         return self.first_alive_unit is not None
     
     def move_units(self):
-        print(self.units)
-        for ind, unit in enumerate(self.units):
+        print(self.units, "\n")
+        for ind, unit in enumerate(self.units):         # moving lancer to front position
             if isinstance(unit, Lancer):
-                print("kurwa")
-                print(self.units.pop(ind), "\n")
                 self.units.append(self.units.pop(ind))
                 break
+
+        for ind, unit in enumerate(self.units):         # moving healers to second and further positions
+            if isinstance(unit, Healer):
+                self.units.insert(-2, self.units.pop(ind))
         print(self.units, "\n")
+        
     
 class Battle:                                       # battle.fight(my_army, enemy_army)
     @staticmethod
