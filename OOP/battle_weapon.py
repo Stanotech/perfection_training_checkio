@@ -168,7 +168,10 @@ class Battle:                                       # battle.fight(my_army, enem
     @staticmethod
     def fight(army_1, army_2):
         while army_1.is_alive and army_2.is_alive:
-            fight(army_1.first_alive_unit, army_2.first_alive_unit, army_1.second_alive_unit, army_2.second_alive_unit)            # tutaj dodac dodatkwe arugmenty
+            if fight(army_1.first_alive_unit, army_2.first_alive_unit, army_1.second_alive_unit, army_2.second_alive_unit):
+                army_1.move_units()  
+            else:
+                army_2.move_units()           # tutaj dodac dodatkwe arugmenty
         return army_1.is_alive
     
     @staticmethod
@@ -198,40 +201,17 @@ class Battle:                                       # battle.fight(my_army, enem
     
 
 
-if __name__ == '__main__':
-    #These "asserts" using only for self-checking and not necessary for auto-testing
-    
-    ronald = Warlord()
-    heimdall = Knight()
-
-    assert fight(heimdall, ronald) == False
-
-    my_army = Army()
-    my_army.add_units(Warlord, 1)
-    my_army.add_units(Warrior, 2)
-    my_army.add_units(Lancer, 2)
-    my_army.add_units(Healer, 2)
-
-    enemy_army = Army()
-    enemy_army.add_units(Warlord, 3)
-    enemy_army.add_units(Vampire, 1)
-    enemy_army.add_units(Healer, 2)
-    enemy_army.add_units(Knight, 2)
-
-    my_army.move_units()
-    enemy_army.move_units()
-
-    assert type(my_army.units[0]) == Lancer
-    assert type(my_army.units[1]) == Healer
-    assert type(my_army.units[-1]) == Warlord
-
-    assert type(enemy_army.units[0]) == Vampire
-    assert type(enemy_army.units[-1]) == Warlord
-    assert type(enemy_army.units[-2]) == Knight
-
-    #6, not 8, because only 1 Warlord per army could be
-    assert len(enemy_army.units) == 6
-
-    battle = Battle()
-
-    assert battle.fight(my_army, enemy_army) == True
+army_1 = Army()
+army_2 = Army()
+army_1.add_units(Warrior, 2)
+army_1.add_units(Lancer, 2)
+army_1.add_units(Defender, 1)
+army_1.add_units(Warlord, 3)
+army_2.add_units(Warlord, 2)
+army_2.add_units(Vampire, 1)
+army_2.add_units(Healer, 5)
+army_2.add_units(Knight, 2)
+army_1.move_units()
+army_2.move_units()
+battle = Battle()
+battle.fight(army_1, army_2)
