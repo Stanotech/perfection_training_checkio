@@ -134,8 +134,15 @@ class Army:
     def is_alive(self):
         return self.first_alive_unit is not None
     
-    def move_units():
-        self.units.append(self.units.pop())
+    def move_units(self):
+        print(self.units)
+        for ind, unit in enumerate(self.units):
+            if isinstance(unit, Lancer):
+                print("kurwa")
+                print(self.units.pop(ind), "\n")
+                self.units.append(self.units.pop(ind))
+                break
+        print(self.units, "\n")
     
 class Battle:                                       # battle.fight(my_army, enemy_army)
     @staticmethod
@@ -208,4 +215,3 @@ if __name__ == '__main__':
 	battle = Battle()
 
 	assert battle.fight(my_army, enemy_army) == True
-    print("Coding complete? Let's try tests!")
