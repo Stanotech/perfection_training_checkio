@@ -135,20 +135,33 @@ class Army:
         return self.first_alive_unit is not None
     
     def move_units(self):
-        print(self.units, "\n")
-        for ind, unit in enumerate(self.units):         # moving lancer to front position
-            if isinstance(unit, Lancer):
-                self.units.append(self.units.pop(ind))
-                break
-            if ind == len(self.units)-1:
-                for ind, unit in enumerate(self.units):         # moving lancer to front position
-                    if isinstance(unit, (Warrior, Knight, Defender, Vampire)):
-                        self.units.append(self.units.pop(ind))
+        print("\n", self.units, "\n")
+        warlord = False
+        army_list = []
+        for ind, unit in reversed(list(enumerate(self.units))):         # moving warlord
+            if isinstance(unit, Warlord):
+                if not warlord:
+                    army_list.insert(-1, self.units.pop(ind))
+                    warlord = True
+                else:
+                    self.units.pop(ind)
+        if warlord:
+            for ind, unit in reversed(list(enumerate(self.units))):        # moving lancer to front position
+                if isinstance(unit, Lancer):
+                    army_list.insert(0, self.units.pop(ind))
+                    break
+                if ind == len(self.units)-1:
+                    for ind, unit in reversed(list(enumerate(self.units))):         # moving any other attacker to front position
+                        if isinstance(unit, (Warrior, Knight, Defender, Vampire)):
+                            army_list.insert(0, self.units.pop(ind))
+                            break
 
-        for ind, unit in enumerate(self.units):         # moving healers to second and further positions
+        for ind, unit in reversed(list(enumerate(self.units))):         # moving healers to second and further positions
             if isinstance(unit, Healer):
-                self.units.insert(-2, self.units.pop(ind))
-        print(self.units, "\n")
+                army_list.insert(1, self.units.pop(ind))
+        army_list[-1:-1] = self.units
+        self.units = army_list
+        print("po", self.units, "\n")
         
     
 class Battle:                                       # battle.fight(my_army, enemy_army)
@@ -188,37 +201,37 @@ class Battle:                                       # battle.fight(my_army, enem
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
     
-	ronald = Warlord()
-	heimdall = Knight()
+    ronald = Warlord()
+    heimdall = Knight()
 
-	assert fight(heimdall, ronald) == False
+    assert fight(heimdall, ronald) == False
 
-	my_army = Army()
-	my_army.add_units(Warlord, 1)
-	my_army.add_units(Warrior, 2)
-	my_army.add_units(Lancer, 2)
-	my_army.add_units(Healer, 2)
+    my_army = Army()
+    my_army.add_units(Warlord, 1)
+    my_army.add_units(Warrior, 2)
+    my_army.add_units(Lancer, 2)
+    my_army.add_units(Healer, 2)
 
-	enemy_army = Army()
-	enemy_army.add_units(Warlord, 3)
-	enemy_army.add_units(Vampire, 1)
-	enemy_army.add_units(Healer, 2)
-	enemy_army.add_units(Knight, 2)
+    enemy_army = Army()
+    enemy_army.add_units(Warlord, 3)
+    enemy_army.add_units(Vampire, 1)
+    enemy_army.add_units(Healer, 2)
+    enemy_army.add_units(Knight, 2)
 
-	my_army.move_units()
-	enemy_army.move_units()
+    my_army.move_units()
+    enemy_army.move_units()
 
-	assert type(my_army.units[0]) == Lancer
-	assert type(my_army.units[1]) == Healer
-	assert type(my_army.units[-1]) == Warlord
+    assert type(my_army.units[0]) == Lancer
+    assert type(my_army.units[1]) == Healer
+    assert type(my_army.units[-1]) == Warlord
 
-	assert type(enemy_army.units[0]) == Vampire
-	assert type(enemy_army.units[-1]) == Warlord
-	assert type(enemy_army.units[-2]) == Knight
+    assert type(enemy_army.units[0]) == Vampire
+    assert type(enemy_army.units[-1]) == Warlord
+    assert type(enemy_army.units[-2]) == Knight
 
-	#6, not 8, because only 1 Warlord per army could be
-	assert len(enemy_army.units) == 6
+    #6, not 8, because only 1 Warlord per army could be
+    assert len(enemy_army.units) == 6
 
-	battle = Battle()
+    battle = Battle()
 
-	assert battle.fight(my_army, enemy_army) == True
+    assert battle.fight(my_army, enemy_army) == True
