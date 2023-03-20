@@ -169,9 +169,9 @@ class Battle:                                       # battle.fight(my_army, enem
     def fight(army_1, army_2):
         while army_1.is_alive and army_2.is_alive:
             if fight(army_1.first_alive_unit, army_2.first_alive_unit, army_1.second_alive_unit, army_2.second_alive_unit):
-                army_1.move_units()  
+                army_2.move_units()  
             else:
-                army_2.move_units()           # tutaj dodac dodatkwe arugmenty
+                army_1.move_units()           # tutaj dodac dodatkwe arugmenty
         return army_1.is_alive
     
     @staticmethod
