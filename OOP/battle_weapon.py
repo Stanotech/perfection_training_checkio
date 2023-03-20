@@ -140,6 +140,10 @@ class Army:
             if isinstance(unit, Lancer):
                 self.units.append(self.units.pop(ind))
                 break
+            if ind == len(self.units)-1:
+                for ind, unit in enumerate(self.units):         # moving lancer to front position
+                    if isinstance(unit, (Warrior, Knight, Defender, Vampire)):
+                        self.units.append(self.units.pop(ind))
 
         for ind, unit in enumerate(self.units):         # moving healers to second and further positions
             if isinstance(unit, Healer):
