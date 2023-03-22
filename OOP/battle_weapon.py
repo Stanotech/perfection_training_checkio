@@ -5,7 +5,7 @@ class Warrior:
     @property
     def is_alive(self):
         return self.health > 0
-    def hit(self, other):            # wchodzi jednostka zaatakowana
+    def hit(self, other, *args):            # wchodzi jednostka zaatakowana
         other.loss(self.attack)        # odpal fukcje obrazen dla jednostki zaatakowanej i przekaz siłę jednostki atakujacej
     def damage(self, attack):           # sila jednostki atakujacej
         return attack
@@ -39,7 +39,7 @@ class Vampire(Warrior):
     def __init__(self):
         super().__init__(health=40, attack=4)
         self.vampirism = 50
-    def hit(self, other):            # nadpisz metode
+    def hit(self, other, *args):            # nadpisz metode
         super().hit(other)           # pobierz metody od rodzica
         self.health += other.damage(self.attack) * self.vampirism // 100        # dodaj jeszcze to
         
@@ -59,6 +59,7 @@ class Healer(Warrior):
         other.loss(self.attack)
         
     def heal(self, friend):
+        print("healing")
         friend.health += 2 + self.heal_power
         
 class Weapon:
@@ -92,19 +93,30 @@ class MagicWand(Weapon):
         
 def fight(unit_1, unit_2, *args):                        # tylko po to bo funkcja jest testowana przez dwa unity
     while 1:
+        print(unit_1.health)
+        print(unit_2.health)
+        print(unit_2, args[1])
         try:
             unit_1.hit(unit_2, args[1])
+            print(unit_1)
+            print(args[0], "\n")
             if  isinstance(args[0], Healer): args[0].heal(unit_1)
         except:
             unit_1.hit(unit_2)
         if unit_2.health <= 0:
             return True
+        print(unit_1, args[0])
+        
         try:
             unit_2.hit(unit_1, args[0])
+            print(unit_2)
+            print(args[1])
             if  isinstance(args[1], Healer): args[1].heal(unit_2)
-        except:
+        except Exception as e: 
+            print(e)
             unit_2.hit(unit_1)
         if unit_1.health <= 0:
+
             return False
         
 class Army:
@@ -135,6 +147,8 @@ class Army:
         return self.first_alive_unit is not None
     
     def move_units(self):
+        for ind, unit in reversed(list(enumerate(self.units))):         #clear dead units
+            if not unit.is_alive: self.units.pop(ind)
         print("\n", self.units, "\n")
         warlord = False
         army_list = []
@@ -146,15 +160,14 @@ class Army:
                 else:
                     self.units.pop(ind)
         if warlord:
-            for ind, unit in reversed(list(enumerate(self.units))):        # moving lancer to front position
-                if isinstance(unit, Lancer):
-                    army_list.insert(0, self.units.pop(ind))
-                    break
-                if ind == len(self.units)-1:
-                    for ind, unit in reversed(list(enumerate(self.units))):         # moving any other attacker to front position
-                        if isinstance(unit, (Warrior, Knight, Defender, Vampire)):
-                            army_list.insert(0, self.units.pop(ind))
-                            break
+            for class_name in [Lancer, Vampire, (Knight, Defender, Warrior)]:
+                for ind, unit in reversed(list(enumerate(self.units))):        # moving lancer to front position
+                    if isinstance(unit, class_name):
+                        army_list.insert(0, self.units.pop(ind))
+                        break
+                else:
+                    continue
+                break
 
         for ind, unit in reversed(list(enumerate(self.units))):         # moving healers to second and further positions
             if isinstance(unit, Healer):
@@ -204,14 +217,17 @@ class Battle:                                       # battle.fight(my_army, enem
 army_1 = Army()
 army_2 = Army()
 army_1.add_units(Warrior, 2)
-army_1.add_units(Lancer, 2)
+army_1.add_units(Lancer, 3)
 army_1.add_units(Defender, 1)
-army_1.add_units(Warlord, 3)
-army_2.add_units(Warlord, 2)
+army_1.add_units(Warlord, 1)
+
+army_2.add_units(Warlord, 5)
 army_2.add_units(Vampire, 1)
-army_2.add_units(Healer, 5)
-army_2.add_units(Knight, 2)
+army_2.add_units(Rookie, 1)
+army_2.add_units(Knight, 1)
+army_1.units[0].equip_weapon(Sword())
+army_2.units[0].equip_weapon(Shield())
 army_1.move_units()
 army_2.move_units()
 battle = Battle()
-battle.fight(army_1, army_2)
+battle.straight_fight(army_1, army_2)
