@@ -23,7 +23,13 @@ class Warlord(Warrior):
         self.defense = 2
     def damage(self, attack):
         return max(0, attack - self.defense)   
-        
+    
+class Rookie(Warrior):
+    def __init__(self):
+        super().__init__(health=50, attack=1)
+        self.health = 50
+        self.attack = 1
+
 class Knight(Warrior):
     def __init__(self):
         super().__init__(attack=7)
@@ -59,7 +65,6 @@ class Healer(Warrior):
         other.loss(self.attack)
         
     def heal(self, friend):
-        print("healing")
         friend.health += 2 + self.heal_power
         
 class Weapon:
@@ -93,27 +98,18 @@ class MagicWand(Weapon):
         
 def fight(unit_1, unit_2, *args):                        # tylko po to bo funkcja jest testowana przez dwa unity
     while 1:
-        print(unit_1.health)
-        print(unit_2.health)
-        print(unit_2, args[1])
         try:
             unit_1.hit(unit_2, args[1])
-            print(unit_1)
-            print(args[0], "\n")
             if  isinstance(args[0], Healer): args[0].heal(unit_1)
         except:
             unit_1.hit(unit_2)
         if unit_2.health <= 0:
             return True
-        print(unit_1, args[0])
         
         try:
             unit_2.hit(unit_1, args[0])
-            print(unit_2)
-            print(args[1])
             if  isinstance(args[1], Healer): args[1].heal(unit_2)
         except Exception as e: 
-            print(e)
             unit_2.hit(unit_1)
         if unit_1.health <= 0:
 
@@ -208,6 +204,8 @@ class Battle:                                       # battle.fight(my_army, enem
             arm2 += army_2[len(army_1):]
         elif len(army_1) - len(army_2) > 0:
             arm1 += army_1[len(army_2):]
+        army_1.move_units() 
+        army_2.move_units() 
                 
                 
         return Battle.straight_fight(arm1, arm2)
