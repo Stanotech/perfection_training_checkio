@@ -11,28 +11,30 @@ class Army:
     def train_archer(self, name):
          return Archer(name, self.__class__.__name__ )
 
-class Swordsman:
-    def __init__(self,name, army_type):
+class Unit:
+    def __init__(self, name, army_type):
         self.name = name
         self.army_type = army_type
+
+class Swordsman(Unit):
+    def __init__(self, name, army_type):
+        super().__init__(name, army_type)
         self.unit_type = "Knight" if army_type == "EuropeanArmy" else "Samurai"
     
     def introduce(self):
         return (f"{self.unit_type} {self.name}, {self.army_type[:-4]} {self.__class__.__name__.lower() }")
 
-class Lancer:
-    def __init__(self,name, army_type):
-        self.name = name
-        self.army_type = army_type
+class Lancer(Unit):
+    def __init__(self, name, army_type):
+        super().__init__(name, army_type)
         self.unit_type = "Raubritter" if army_type == "EuropeanArmy" else "Ronin"
     
     def introduce(self):
         return (f"{self.unit_type} {self.name}, {self.army_type[:-4]} {self.__class__.__name__.lower() }")
 
-class Archer:
-    def __init__(self,name, army_type):
-        self.name = name
-        self.army_type = army_type
+class Archer(Unit):
+    def __init__(self, name, army_type):
+        super().__init__(name, army_type)
         self.unit_type = "Ranger" if army_type == "EuropeanArmy" else "Shinobi"
     
     def introduce(self):
