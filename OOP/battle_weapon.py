@@ -10,8 +10,6 @@ class Warrior:
     def damage(self, attack):           # sila jednostki atakujacej
         return attack
     def loss(self, attack):            # obnizenie zycia dla jednostki zaatakowanej z siłą jednostki atakujacej
-        # print(self.damage(attack))
-        # print(self.health)
         self.health -= self.damage(attack)
         
     def equip_weapon(self, weapon):
@@ -24,7 +22,6 @@ class Warlord(Warrior):
         super().__init__(health=100, attack=4)
         self.defense = 2
     def damage(self, attack):
-        print("damage", max(0, attack - self.defense), "attack", attack, "defense", self.defense )
         return max(0, attack - self.defense)   
     
 class Rookie(Warrior):
@@ -101,8 +98,6 @@ class MagicWand(Weapon):
         
 def fight(unit_1, unit_2, *args):                        # tylko po to bo funkcja jest testowana przez dwa unity
     while 1:
-        # print(args[0])
-        # print(args[1])
 
         try:
             unit_1.hit(unit_2, args[1])
@@ -110,17 +105,14 @@ def fight(unit_1, unit_2, *args):                        # tylko po to bo funkcj
         except:
             unit_1.hit(unit_2)
         if unit_2.health <= 0:
-            # print("\n")
             return True        
         try:
             unit_2.hit(unit_1, args[0])
             if  isinstance(args[1], Healer): args[1].heal(unit_2)
         except Exception as e: 
             unit_2.hit(unit_1)
-        print(unit_1.health, unit_2.health, "\n")
         
-        if unit_1.health <= 0: 
-            # print("\n")           
+        if unit_1.health <= 0:           
             return False
     
         
@@ -154,7 +146,6 @@ class Army:
     def move_units(self):
         for ind, unit in reversed(list(enumerate(self.units))):         #clear dead units
             if not unit.is_alive: self.units.pop(ind)
-        print("\n", self.units, "\n")
         warlord = False
         army_list = []
 
@@ -167,9 +158,6 @@ class Army:
         for ind, unit in reversed(list((enumerate(self.units)))):         # deleting others warlords
             if isinstance(unit, Warlord):
                 self.units.pop(ind)
-        
-        # print("po usuwaniu warlorda", self.units)
-
 
         if warlord:
             for class_name in [Lancer, Vampire, Warrior, Defender, Knight]:
@@ -188,13 +176,10 @@ class Army:
             for class_name in [Lancer, Defender, Knight]:
                 for ind, unit in reversed(list(enumerate(self.units))):
                     if isinstance(unit, class_name):
-                        # print("pizda")
                         army_list.insert(-1, self.units.pop(ind))
 
         army_list[-1:-1] = self.units
-        self.units = army_list
-        print("po", self.units, "\n")
-        
+        self.units = army_list        
     
 class Battle:                                       # battle.fight(my_army, enemy_army)
     @staticmethod
@@ -249,10 +234,8 @@ army_2.add_units(Vampire, 1)
 army_2.add_units(Rookie, 1)
 army_2.add_units(Knight, 1)
 army_1.units[0].equip_weapon(Sword())
-print(army_1.units[0], "get the sword")
 army_2.units[0].equip_weapon(Shield())
-print(army_2.units[0], "get the shield")
-print(army_2.units[0].defense)
+
 
 army_1.move_units()
 army_2.move_units()
@@ -260,17 +243,17 @@ battle = Battle()
 battle.straight_fight(army_1, army_2)
 
 
-# army_1 = Army()
-# army_2 = Army()
-# army_1.add_units(Warlord, 1)
-# army_1.add_units(Warrior, 2)
-# army_1.add_units(Lancer, 2)
-# army_1.add_units(Healer, 2)
-# army_2.add_units(Warlord, 1)
-# army_2.add_units(Vampire, 1)
-# army_2.add_units(Healer, 2)
-# army_2.add_units(Knight, 2)
-# army_1.move_units()
-# army_2.move_units()
-# battle = Battle()
-# battle.fight(army_1, army_2)
+army_1 = Army()
+army_2 = Army()
+army_1.add_units(Warlord, 1)
+army_1.add_units(Warrior, 2)
+army_1.add_units(Lancer, 2)
+army_1.add_units(Healer, 2)
+army_2.add_units(Warlord, 1)
+army_2.add_units(Vampire, 1)
+army_2.add_units(Healer, 2)
+army_2.add_units(Knight, 2)
+army_1.move_units()
+army_2.move_units()
+battle = Battle()
+battle.fight(army_1, army_2)
