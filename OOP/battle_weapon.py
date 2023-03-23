@@ -113,8 +113,7 @@ def fight(unit_1, unit_2, *args):                        # tylko po to bo funkcj
             unit_2.hit(unit_1)
         
         if unit_1.health <= 0:           
-            return False
-    
+            return False    
         
 class Army:
     def __init__(self):
