@@ -1,50 +1,33 @@
 class Army:
-    def __init__(self):
-        pass
-
-    def train_swordsman(self, name):
-         return Swordsman(name, self.__class__.__name__ )
-    
-    def train_lancer(self, name):
-         return Lancer(name, self.__class__.__name__ )
-    
-    def train_archer(self, name):
-         return Archer(name, self.__class__.__name__ )
+    def train_swordsman(self, name): return Swordsman(name, self.__class__.__name__ )    
+    def train_lancer(self, name): return Lancer(name, self.__class__.__name__ )    
+    def train_archer(self, name): return Archer(name, self.__class__.__name__ )
 
 class Unit:
     def __init__(self, name, army_type):
         self.name = name
         self.army_type = army_type
 
+    def introduce(self):
+        return (f"{self.unit_type} {self.name}, {self.army_type[:-4]} {self.__class__.__name__.lower() }")
+
 class Swordsman(Unit):
     def __init__(self, name, army_type):
         super().__init__(name, army_type)
-        self.unit_type = "Knight" if army_type == "EuropeanArmy" else "Samurai"
-    
-    def introduce(self):
-        return (f"{self.unit_type} {self.name}, {self.army_type[:-4]} {self.__class__.__name__.lower() }")
+        self.unit_type = "Knight" if army_type == "EuropeanArmy" else "Samurai"    
 
 class Lancer(Unit):
     def __init__(self, name, army_type):
         super().__init__(name, army_type)
         self.unit_type = "Raubritter" if army_type == "EuropeanArmy" else "Ronin"
-    
-    def introduce(self):
-        return (f"{self.unit_type} {self.name}, {self.army_type[:-4]} {self.__class__.__name__.lower() }")
 
 class Archer(Unit):
     def __init__(self, name, army_type):
         super().__init__(name, army_type)
         self.unit_type = "Ranger" if army_type == "EuropeanArmy" else "Shinobi"
-    
-    def introduce(self):
-        return (f"{self.unit_type} {self.name}, {self.army_type[:-4]} {self.__class__.__name__.lower() }")
 
-class AsianArmy(Army):
-    pass
-
-class EuropeanArmy(Army):
-    pass
+class AsianArmy(Army): pass
+class EuropeanArmy(Army): pass
 
 
 if __name__ == '__main__':
