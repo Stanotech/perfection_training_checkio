@@ -167,6 +167,8 @@ class Army:
         for ind, unit in reversed(list((enumerate(self.units)))):         # deleting others warlords
             if isinstance(unit, Warlord):
                 self.units.pop(ind)
+        
+        # print("po usuwaniu warlorda", self.units)
 
 
         if warlord:
@@ -182,7 +184,13 @@ class Army:
             for ind, unit in reversed(list(enumerate(self.units))):         # moving healers to second and further positions
                 if isinstance(unit, Healer):
                     army_list.insert(1, self.units.pop(ind))
-                    
+
+            for class_name in [Lancer, Defender, Knight]:
+                for ind, unit in reversed(list(enumerate(self.units))):
+                    if isinstance(unit, class_name):
+                        # print("pizda")
+                        army_list.insert(-1, self.units.pop(ind))
+
         army_list[-1:-1] = self.units
         self.units = army_list
         print("po", self.units, "\n")
