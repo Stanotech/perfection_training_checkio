@@ -10,6 +10,8 @@ class Warrior:
     def damage(self, attack):           # sila jednostki atakujacej
         return attack
     def loss(self, attack):            # obnizenie zycia dla jednostki zaatakowanej z siłą jednostki atakujacej
+        # print(self.damage(attack))
+        # print(self.health)
         self.health -= self.damage(attack)
         
     def equip_weapon(self, weapon):
@@ -22,6 +24,7 @@ class Warlord(Warrior):
         super().__init__(health=100, attack=4)
         self.defense = 2
     def damage(self, attack):
+        print("damage", max(0, attack - self.defense), "attack", attack, "defense", self.defense )
         return max(0, attack - self.defense)   
     
 class Rookie(Warrior):
@@ -98,22 +101,28 @@ class MagicWand(Weapon):
         
 def fight(unit_1, unit_2, *args):                        # tylko po to bo funkcja jest testowana przez dwa unity
     while 1:
+        # print(args[0])
+        # print(args[1])
+
         try:
             unit_1.hit(unit_2, args[1])
             if  isinstance(args[0], Healer): args[0].heal(unit_1)
         except:
             unit_1.hit(unit_2)
         if unit_2.health <= 0:
-            return True
-        
+            # print("\n")
+            return True        
         try:
             unit_2.hit(unit_1, args[0])
             if  isinstance(args[1], Healer): args[1].heal(unit_2)
         except Exception as e: 
             unit_2.hit(unit_1)
-        if unit_1.health <= 0:
-
+        print(unit_1.health, unit_2.health, "\n")
+        
+        if unit_1.health <= 0: 
+            # print("\n")           
             return False
+    
         
 class Army:
     def __init__(self):
@@ -148,15 +157,20 @@ class Army:
         print("\n", self.units, "\n")
         warlord = False
         army_list = []
-        for ind, unit in reversed(list(enumerate(self.units))):         # moving warlord
+
+        for ind, unit in (enumerate(self.units)):         # moving warlord to new list
             if isinstance(unit, Warlord):
-                if not warlord:
-                    army_list.insert(-1, self.units.pop(ind))
-                    warlord = True
-                else:
-                    self.units.pop(ind)
+                army_list.insert(-1, self.units.pop(ind))
+                warlord = True
+                break
+
+        for ind, unit in reversed(list((enumerate(self.units)))):         # deleting others warlords
+            if isinstance(unit, Warlord):
+                self.units.pop(ind)
+
+
         if warlord:
-            for class_name in [Lancer, Vampire, (Knight, Defender, Warrior)]:
+            for class_name in [Lancer, Vampire, Warrior, Defender, Knight]:
                 for ind, unit in reversed(list(enumerate(self.units))):        # moving lancer to front position
                     if isinstance(unit, class_name):
                         army_list.insert(0, self.units.pop(ind))
@@ -165,9 +179,10 @@ class Army:
                     continue
                 break
 
-        for ind, unit in reversed(list(enumerate(self.units))):         # moving healers to second and further positions
-            if isinstance(unit, Healer):
-                army_list.insert(1, self.units.pop(ind))
+            for ind, unit in reversed(list(enumerate(self.units))):         # moving healers to second and further positions
+                if isinstance(unit, Healer):
+                    army_list.insert(1, self.units.pop(ind))
+                    
         army_list[-1:-1] = self.units
         self.units = army_list
         print("po", self.units, "\n")
@@ -184,28 +199,30 @@ class Battle:                                       # battle.fight(my_army, enem
         return army_1.is_alive
     
     @staticmethod
-    def straight_fight(army_1, army_2):
+    def straight_fight(army_1, army_2):        
         try:
             army_1 = army_1.units
             army_2 = army_2.units
         except:
             pass
-        
+
         if not army_1: return False
         if not army_2: return True
-        arm1, arm2 = [], []
+        arm1= Army()
+        arm2= Army()
         for unit1, unit2 in zip(army_1, army_2):
             if fight(unit1, unit2):
-                arm1.append(unit1)
+                arm1.units.append(unit1)
             else:
-                arm2.append(unit2)
+                arm2.units.append(unit2)
                 
         if len(army_1) - len(army_2) < 0:
-            arm2 += army_2[len(army_1):]
+            arm2.units += army_2[len(army_1):]
         elif len(army_1) - len(army_2) > 0:
-            arm1 += army_1[len(army_2):]
-        army_1.move_units() 
-        army_2.move_units() 
+            arm1.units += army_1[len(army_2):]
+        arm1.move_units() 
+        arm2.move_units() 
+        
                 
                 
         return Battle.straight_fight(arm1, arm2)
@@ -224,8 +241,28 @@ army_2.add_units(Vampire, 1)
 army_2.add_units(Rookie, 1)
 army_2.add_units(Knight, 1)
 army_1.units[0].equip_weapon(Sword())
+print(army_1.units[0], "get the sword")
 army_2.units[0].equip_weapon(Shield())
+print(army_2.units[0], "get the shield")
+print(army_2.units[0].defense)
+
 army_1.move_units()
 army_2.move_units()
 battle = Battle()
 battle.straight_fight(army_1, army_2)
+
+
+# army_1 = Army()
+# army_2 = Army()
+# army_1.add_units(Warlord, 1)
+# army_1.add_units(Warrior, 2)
+# army_1.add_units(Lancer, 2)
+# army_1.add_units(Healer, 2)
+# army_2.add_units(Warlord, 1)
+# army_2.add_units(Vampire, 1)
+# army_2.add_units(Healer, 2)
+# army_2.add_units(Knight, 2)
+# army_1.move_units()
+# army_2.move_units()
+# battle = Battle()
+# battle.fight(army_1, army_2)
