@@ -1,3 +1,6 @@
+# description https://py.checkio.org/en/mission/building-base/
+
+
 class Building:
     def __init__(self, south, west, width_WE, width_NS, height=10):
         self.point_x = west
