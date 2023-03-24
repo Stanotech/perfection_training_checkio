@@ -7,7 +7,7 @@ class Building:
         self.height = height
 
     def corners(self):
-        return {'north-east': [self.point_x + self.x_length, self.point_y + self.y_length], 'south-east': [self.point_y, self.point_x + self.x_length], 'south-west': [self.point_y, self.point_x], 'north-west': [self.point_y + self.y_length, self.point_x]}
+        return {'north-east': [self.point_y + self.y_length, self.point_x + self.x_length], 'south-east': [self.point_y, self.point_x + self.x_length], 'south-west': [self.point_y, self.point_x], 'north-west': [self.point_y + self.y_length, self.point_x]}
 
     def area(self):
         return self.x_length* self.y_length
