@@ -16,7 +16,7 @@ class Building:
         return self.x_length* self.y_length * self.height
 
     def __repr__(self):
-        return self.height
+        return (f"Building({self.point_y}, {self.point_x}, {self.x_length}, {self.y_length}, {self.height})")
 
 
 if __name__ == '__main__':
