@@ -26,6 +26,12 @@ class VoiceCommand:
     def current_channel(self):
         return self.actual_channel
     
+    def is_exist(self, name: str)-> str:
+        if self.actual_channel.find(name) < 0 : 
+            return "No"
+        else: 
+            return "Yes"
+
     def is_exist(self, num: int)-> str:
         if 0 <= num <= len(self.channels) : 
             print("kurwa")
@@ -34,9 +40,7 @@ class VoiceCommand:
             print("tutaj")
             return "No"
 
-    def is_exist(self, name: str)-> str:
-        if self.actual_channel.find(name) < 0 : return "No"
-        else: return "Yes"
+
 
 
 if __name__ == '__main__':
