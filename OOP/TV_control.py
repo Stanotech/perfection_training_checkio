@@ -25,12 +25,6 @@ class VoiceCommand:
     
     def current_channel(self):
         return self.actual_channel
-    
-    def is_exist(self, name: str)-> str:
-        if self.actual_channel.find(name) < 0 : 
-            return "No"
-        else: 
-            return "Yes"
 
     def is_exist(self, num):
         if str(num).isnumeric():
