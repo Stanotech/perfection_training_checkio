@@ -16,7 +16,7 @@ class VoiceCommand:
         return self.actual_channel
     
     def next_channel(self):
-        self.actual_channel = self.channels[self.channels.index(self.actual_channel)+1]
+        self.actual_channel = self.channels[(self.channels.index(self.actual_channel)+1]
         return self.actual_channel
     
     def previous_channel(self):
@@ -32,13 +32,20 @@ class VoiceCommand:
         else: 
             return "Yes"
 
-    def is_exist(self, num: int)-> str:
-        if 0 <= num <= len(self.channels) : 
-            print("kurwa")
-            return "Yes"
-        else: 
-            print("tutaj")
-            return "No"
+    def is_exist(self, num):
+        if str(num).isnumeric():
+            if 0 <= num <= len(self.channels) : 
+                print("kurwa")
+                return "Yes"
+            else: 
+                print("tutaj")
+                return "No"
+        else:
+            try: 
+                self.channels.index(num)
+                return "Yes"
+            except: 
+                return "No"    
 
 
 
@@ -57,5 +64,5 @@ if __name__ == '__main__':
     assert controller.previous_channel() == "BBC"
     assert controller.current_channel() == "BBC"
     assert controller.is_exist(4) == "No"
-    # assert controller.is_exist("TV1000") == "Yes"
+    assert controller.is_exist("TV1000") == "Yes"
     print("Coding complete? Let's try tests!")
