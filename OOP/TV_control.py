@@ -1,7 +1,9 @@
+#description - https://py.checkio.org/en/mission/voice-tv-control/
+
 class VoiceCommand:
     def __init__(self, channels):
         self.channels = channels
-        self.actual_channel = ""
+        self.actual_channel = self.channels[0]
 
     def first_channel(self):
         self.actual_channel = self.channels[0]
@@ -16,7 +18,7 @@ class VoiceCommand:
         return self.actual_channel
     
     def next_channel(self):
-        self.actual_channel = self.channels[(self.channels.index(self.actual_channel)+1]
+        self.actual_channel = self.channels[(self.channels.index(self.actual_channel)+1)%len(self.channels)]
         return self.actual_channel
     
     def previous_channel(self):
