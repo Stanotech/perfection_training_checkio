@@ -1,10 +1,15 @@
 class Chat:
-    connected = []
-
+    
+    
     def __init__(self):
-        pass
+        connected = []
+        messages = []
 
     def connect_human(self, human):
+        self.connected.append(human)
+
+    def connect_robot(self, robot):
+        self.connected.append(robot)
 
     def show_human_dialogue(self):
 
