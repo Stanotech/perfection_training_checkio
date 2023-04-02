@@ -13,10 +13,10 @@ class Chat:
 
     def show_human_dialogue(self):
 
-        return print('"""',"\n".join(self.messages), '"""')
+        return ('"""'+"\n".join(self.messages)+ '"""')
 
     def show_robot_dialogue(self):
-        return print('"""',"\n".join(self.messages), '"""')
+        return ('"""'+"\n".join(self.messages)+ '"""')
 
 
 class Human:
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     karl.send("Hi! What's new?")
     bot.send("Hello, human. Could we speak later about it?")
 
-    chat.show_human_dialogue()
+    print(chat.show_human_dialogue())
 
 #     assert (
 #         chat.show_human_dialogue()
