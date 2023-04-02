@@ -12,10 +12,11 @@ class Chat:
         robot.chat = self
 
     def show_human_dialogue(self):
-        return print(self.messages)
+
+        return print('"""',"\n".join(self.messages), '"""')
 
     def show_robot_dialogue(self):
-        return print(self.messages)
+        return print('"""',"\n".join(self.messages), '"""')
 
 
 class Human:
