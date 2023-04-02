@@ -7,6 +7,7 @@ class Chat:
 
     def connect_human(self, human):
         self.connected.append(human)
+        human.chat = self
 
     def connect_robot(self, robot):
         self.connected.append(robot)
@@ -20,11 +21,17 @@ class Chat:
 class Human:
     def __init__(self, name):
         self.name = name
+        self.chat = None
 
 
     def send(self, message):
+        self.chat.messages.append(message)
 
 
 class Robot:
     def __init__(self, name):
         self.name = name   
+        self.chat = None
+
+    def send(self, message):
+        self.chat.messages.append(message)
