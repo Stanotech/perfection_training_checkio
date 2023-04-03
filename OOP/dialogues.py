@@ -13,11 +13,11 @@ class Chat:
 
     def show_human_dialogue(self):   
            
-        return ''.join(who + mes + "\n" for who, mes in (self.messages)) 
+        return "\n".join(who + mes for who, mes in (self.messages)) 
 
     def show_robot_dialogue(self):
         
-        return ''.join(who + ''.join("0" if char in "aeiouAEIOU" else "1" for char in mes) for who, mes in (self.messages))  
+        return "\n".join((who + ''.join("0" if char in "aeiouAEIOU" else "1" for char in mes)) for who, mes in (self.messages))  
 
 
 class Human:
