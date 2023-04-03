@@ -50,13 +50,13 @@ if __name__ == "__main__":
 
     print(chat.show_human_dialogue())
 
-#     assert (
-#         chat.show_human_dialogue()
-#         == """Karl said: Hi! What's new?
-# R2D2 said: Hello, human. Could we speak later about it?"""
-#     )
-#     assert (
-#         chat.show_robot_dialogue()
-#         == """Karl said: 101111011111011
-# R2D2 said: 10110111010111100111101110011101011010011011"""
-#     )
+    assert (
+        chat.show_human_dialogue()
+        == """Karl said: Hi! What's new?
+R2D2 said: Hello, human. Could we speak later about it?"""
+    )
+    assert (
+        chat.show_robot_dialogue()
+        == """Karl said: 101111011111011
+R2D2 said: 10110111010111100111101110011101011010011011"""
+    )
