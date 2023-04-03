@@ -34,8 +34,7 @@ class Person:
         elif self.gender == "male":
             return f"He is a {self.job}"
         elif self.gender == "female":
-            return f"She is a {self.job}"
-        
+            return f"She is a {self.job}"        
     
     def money (self):
         return f"{('{:,}'.format(self.working_years*12*self.salary)).replace(',', ' ')}"
