@@ -11,12 +11,13 @@ class Chat:
         self.connected.append(robot)
         robot.chat = self
 
-    def show_human_dialogue(self):        
-        return ("\n".join(self.messages))
+    def show_human_dialogue(self):   
+           
+        return ''.join(who + mes + "\n" for who, mes in (self.messages)) 
 
     def show_robot_dialogue(self):
-        for int, mes in (self.messages)        
-        return ("\n".join(self.messages))
+        
+        return ''.join(who + ''.join("0" if char in "aeiouAEIOU" else "1" for char in mes) for who, mes in (self.messages))  
 
 
 class Human:
@@ -26,9 +27,9 @@ class Human:
 
 
     def send(self, message):
-        self.chat.messages.append(self.name + " said: "+ message)
+        self.chat.messages.append((self.name + " said: ", message))
 
-''.join("0" if char in "aeiouAEIOU" else "1" for char in "\n".join(message)
+
         
 class Robot:
     def __init__(self, name):
@@ -36,7 +37,9 @@ class Robot:
         self.chat = None
 
     def send(self, message):
-        self.chat.messages.append(zip(self.name + " said: ", message))
+        self.chat.messages.append((self.name + " said: ", message))
+
+
 
 if __name__ == "__main__":
     # These "asserts" using only for self-checking and not necessary for auto-testing
@@ -49,7 +52,7 @@ if __name__ == "__main__":
     karl.send("Hi! What's new?")
     bot.send("Hello, human. Could we speak later about it?")
 
-    print(chat.show_human_dialogue())
+    print(chat.show_robot_dialogue())
 
     assert (
         chat.show_human_dialogue()
