@@ -26,7 +26,7 @@ class Person:
     
     def age (self):
         date = self.birth_date.split(".")
-        return date[2]-2018 if date[1]-1 >= 0 else date[2]-2017
+        return 2018-int(date[2]) if 1-int(date[1]) >= 0 else 2017-int(date[2])
     
 if __name__ == "__main__":
     # These "asserts" using only for self-checking and not necessary for auto-testing
